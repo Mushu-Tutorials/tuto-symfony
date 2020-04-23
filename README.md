@@ -12,13 +12,11 @@ Tutoriel Symfony - Création d'un site internet
 
 ## Initialisation du projet
 
-Création du projet via **Composer** suivant une architecture pré-configurée `symfony/website-skeleton`, nommée **tuto-symfony** :
-
-`composer create-project symfony/website-skeleton tuto-symfony`
+Création du projet via **Composer** suivant une architecture pré-configurée `symfony/website-skeleton`, nommée **tuto-symfony** : `composer create-project symfony/website-skeleton tuto-symfony`
 
 Se déplacer dans le projet `cd tuto-symfony`
 
-## Installer un serveur local
+## Installer un serveur local
 
 Création via **Composer** d'un serveur local pour y host le projet. Renseigner la version de la dépendance ([source](https://packagist.org/packages/symfony/web-server-bundle "Packagist Symfony server")) :
 
