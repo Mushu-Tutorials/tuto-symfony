@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
@@ -76,10 +75,6 @@ composer.phar
 **/Entity/*~
 
 # Embedded web-server pid file
-###> symfony/web-server-bundle ###
-/.web-server-pid
-###< symfony/web-server-bundle ###
-
 ### Symfony Patch ###
 /web/css/
 /web/js/
