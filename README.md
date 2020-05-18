@@ -32,7 +32,11 @@ Import du package de fixtures pour créer des MOOC (jeux de données fictives) :
 
 ## Run the serve
 
-Taper la commande suivante afin de lancer le serveur : `php bin/console server:run`
+Taper la commande suivante afin de lancer le serveur : 
+```shell
+composer install
+symfony server:start
+```
 
 ## Créer un controller
 
@@ -78,4 +82,12 @@ class ArticleFixtures extends Fixture {
     $manager->flush();
   }
 }
+```
+
+## Créer un formulaire
+
+Créer un formulaire vial la commande suivante. **ATTENTION : Le nom du formulaire doit finir par Type.** 
+```shell
+php bin/console make:form
+ArticleType
 ```
