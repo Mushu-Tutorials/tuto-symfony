@@ -4,6 +4,27 @@ _Inspired from [Lior CHAMLA](https://www.youtube.com/channel/UCS71mal_TkTW_PpZR9
 
 Tutoriel Symfony - Création d'un site internet
 
+# ToDo
+
+Liste de features interessantes à ajouter au projet :
+
+- [ ] Comment gérer une option "Se rappeler de moi" : [ici](https://symfony.com/doc/current/security/remember_me.html "Symfony")
+- [ ] Comment gérer les accès dans le controller : [ici](https://symfony.com/doc/current/security/securing_services.html "Symfony")
+- [ ] Comment rediriger là où on veut après le login : [ici](https://symfony.com/doc/current/security/form_login.html "Symfony")
+- [ ] Comment utiliser les annotations pour sécuriser les controller : [ici](https://symfony.com/doc/master/bundles/SensioFrameworkExtraBundle/annotations/security.html "Symfony")
+
+## Liens utiles
+
+- Site officiel de Symfony (et sa documentation) : [ici](https://symfony.com/)
+- Tutoriel officiel de présentation du composant Security : [ici](https://symfony.com/doc/current/security.html)
+- Mieux comprendre les Firewalls : [ici](https://symfony.com/doc/current/security/firewall_restriction.html)
+- Documentation sur l'option form_login : [ici](https://symfony.com/doc/current/security/form_login_setup.html)
+- Comment charger les utilisateurs à partir de la base de données : [ici](https://symfony.com/doc/current/security/user_provider.html)
+- Comment utiliser le UserPasswordEncoder : [ici](https://symfony.com/doc/current/security.html)
+- Créer un lien de déconnexion : [ici](https://symfony.com/doc/current/security.html#security-logging-out)
+- Comment accéder à l'utilisateur connecté dans Twig : [ici](https://symfony.com/doc/current/templates.html#content_wrapper)
+- Documentation complète du fichier de configuration du package Security : [ici](https://symfony.com/doc/current/reference/configuration/security.html)
+
 ## Prérequis
 
 - Site officiel de Symfony et documentation [ici](https://symfony.com/ "Symfony official website")
