@@ -1,4 +1,6 @@
 {
+    "name": "tuto-symfony",
+    "description": "Tuto Symfony",
     "type": "project",
     "license": "proprietary",
     "require": {
