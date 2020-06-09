@@ -107,8 +107,36 @@ class ArticleFixtures extends Fixture {
 
 ## Créer un formulaire
 
-Créer un formulaire vial la commande suivante. **ATTENTION : Le nom du formulaire doit finir par Type.** 
+Pour ajouter un thème se référer au chapitre "[Utiliser un thème](#utiliser-un-theme "Utiliser un thème")".
+
+Créer un formulaire via la commande suivante. **ATTENTION : Le nom du formulaire doit finir par Type.**
+
 ```shell
 php bin/console make:form
 ArticleType
 ```
+
+### Modifier les labels
+
+Il y a plusieurs méthodes afin de mofifier les labels :
+
+- Dans le formulaire de l'objet **MyObjectType.php**, sur le champ à modifier, ajouter les options à modifier : 
+```php
+$builder
+  ->add('address')
+  ->add('city', null, [
+    'label' => 'Ville'
+  ]);
+```
+
+- Au niveau des traductions de la page du formulaire **MyObjectType.php**
+  - Dans la fonction *configureOptions()* on ajoute la ligne `'translation_domain' => 'forms'`.
+  - On créé le fichier de traduction `translations/forms.fr.yaml` où on mets les mots et leur traduction `City: Ville` ou `Zipcode: Code postal`.
+  - Dans le fichier `config/packages/translation.yml` on retrouve la configuration de la traduction. changer le **default_locale** en `'%locale%'` et **fallbacks** en `'%locale%'` (avec les guillemets).
+  - Dans le fichier `config/services.yaml` ajouer ou modifier **parameter** en ajoutant la ligne suivante : `locale: 'fr'
+
+## Utiliser un thème
+
+Il y a possibilité d'utiliser des thèmes qui faudra définir au sein du projet, par epmple pour mettre en forme les formulaires vu dans [cette partie](#creer-un-formulaire "Créer un formulaire").
+
+Modifier le fichier `config/packages/twig.yaml` et ajouter à *twig* le `form_themes: ['bootstrap_4_layout.html.twig']`
