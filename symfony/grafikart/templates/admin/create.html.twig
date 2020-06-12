@@ -2,7 +2,12 @@
 
 {% block body %}
 	<div class="container">
-		<h1>Editer le bien</h1>
+
+		{% if editMode %}
+			<h1>Editer le bien</h1>
+		{% else %}
+			<h1>Création d'un nouveau bien</h1>
+		{% endif %}
 
 		{{ form_start(form) }}
 
@@ -26,7 +31,13 @@
 
 		{{ form_rest(form) }}
 
-		<button class="btn btn-primary">Editer</button>
+		<button class="btn btn-primary">
+			{% if editMode %}
+				Editer
+			{% else %}
+				Créer
+			{% endif %}
+		</button>
 
 		{{ form_end(form) }}
 
