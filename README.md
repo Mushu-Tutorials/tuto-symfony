@@ -51,6 +51,8 @@ Si un message d'erreur de ce type apparait, vérifier la version de la dépendan
 
 Import du package de fixtures pour créer des MOOC (jeux de données fictives) : `composer require orm-fixtures --dev`
 
+Mise à jour des dépendances obsolètes : `composer require laminas/laminas-code laminas/laminas-eventmanager`
+
 ## Run the serve
 
 Taper la commande suivante afin de lancer le serveur : 
