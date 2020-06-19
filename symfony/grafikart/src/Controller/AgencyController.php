@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Property;
+use App\Entity\PropertySearch;
+use App\Form\PropertySearchType;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -68,9 +70,19 @@ class AgencyController extends AbstractController
 		// // $manager->flush();
 		// dump($property);
 
+		/**
+		 * Création du formulaire de recherche de biens
+		 */
+		$search = new PropertySearch;
+		$form = $this->createForm(PropertySearchType::class, $search);
+		$form->handleRequest($request);
+
+		/**
+		 * Création de la pagination et l'affichacge des biens par page
+		 */
 		// $properties = $repository->findAllVisible();
 		$properties = $paginator->paginate(
-			$repository->findAllVisibleQuery(),
+			$repository->findAllVisibleQuery($search),
 			$request->query->getInt('page', 1), 12
 		);
 		dump($properties);
@@ -80,6 +92,7 @@ class AgencyController extends AbstractController
 			// 'current_page' => 'show_properties',
 			'properties' => $properties,
 			// 'property' => $property,
+			'form' => $form->createView(),
 		]);
 	}
 
