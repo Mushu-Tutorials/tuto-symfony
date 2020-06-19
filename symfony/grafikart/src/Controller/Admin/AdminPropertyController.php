@@ -55,6 +55,13 @@ class AdminPropertyController extends AbstractController
         $property->setCreatedAt(new \DateTime);
       }
       $manager->persist($property);
+
+      if (!$property->getId()) {
+        $this->addFlash('success', 'Création effectuée');
+      } else {
+        $this->addFlash('success', 'Modification effectuée');
+      }
+
       $manager->flush();
 
       return $this->redirectToRoute('admin_property_index');
@@ -86,6 +93,7 @@ class AdminPropertyController extends AbstractController
      */
     if ($this->isCsrfTokenValid('delete' . $property->getId(), $request->get('_token'))) {
       $manager->remove($property);
+      $this->addFlash('success', 'Suppression effectuée');
       $manager->flush();
 
       // return new Response('Suppression');

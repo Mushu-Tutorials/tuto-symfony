@@ -118,6 +118,52 @@ php bin/console make:form
 ArticleType
 ```
 
+### Supprimer une entité
+
+Référence : [Tuto Grafikart (30'49)](https://youtu.be/6Ryu7-VSV5k?t=1593 "Tuto Grafikart")
+
+Dans une liste d'entité, pour ajouter la suppression d'un élément, il faut ajouter un mini formulaire postant une requête de suppression. **Afin d'éviter tout piratage, des tokens CSRF sont ajoutés automatiquement après le dernier champ d'un formulaire. Sans, le formulaire sera invalide et empèchera son envoi via la requête.** 
+
+Dans le cas de la suppression d'une entité, il faudra générer ce TOKEN CSRF.
+
+Dans le fichier *Twig* :
+
+```php
+<form action="{{ path('admin_property_delete', {id: property.id}) }}" method="post" style="display: inline-block;" onsubmit="return confirm('Confirmer la suppression')">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ property.id) }}">
+  <button class="btn btn-danger">Supprimer</button>
+</form>
+```
+
+Dans le *controller* :
+```php
+/**
+ * @Route("/admin/property/{id}", name="admin_property_delete", methods="DELETE")
+ */
+public function delete(Property $property = null, Request $request, EntityManagerInterface $manager)
+{
+  /**
+   * Pour ajouter de la sécurité sur la suppression d'un bien,
+   * On ajoute une gestion des TOKENS CSRF
+   * 
+   * Sur la vue, on ajoute un champ INPUT HIDDEN (<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ property.id) }}">)
+   * Avec un token généré en fonction de l'objet choisi
+   * 
+   * Dans le Controller, on ajoute le code ci-dessous
+   *   isCsrfTokenValid('valeur du token', 'récupération du name _token')
+   */
+  if ($this->isCsrfTokenValid('delete' . $property->getId(), $request->get('_token'))) {
+    $manager->remove($property);
+    $manager->flush();
+
+    // return new Response('Suppression');
+  }
+
+  return $this->redirectToRoute('admin_property_index');
+}
+```
+
 ### Modifier les labels
 
 Il y a plusieurs méthodes afin de mofifier les labels :
@@ -136,6 +182,11 @@ $builder
   - On créé le fichier de traduction `translations/forms.fr.yaml` où on mets les mots et leur traduction `City: Ville` ou `Zipcode: Code postal`.
   - Dans le fichier `config/packages/translation.yml` on retrouve la configuration de la traduction. changer le **default_locale** en `'%locale%'` et **fallbacks** en `'%locale%'` (avec les guillemets).
   - Dans le fichier `config/services.yaml` ajouer ou modifier **parameter** en ajoutant la ligne suivante : `locale: 'fr'
+
+### Editer les input
+
+Pour formatter un INPUT, comme mettre des espaces entre les milliers :
+
 
 ## Utiliser un thème
 
