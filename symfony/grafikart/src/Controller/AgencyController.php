@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Entity\Property;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -39,14 +41,15 @@ class AgencyController extends AbstractController
 	public function create(): Response
 	{
 		return $this->render('agency/create.html.twig', [
-			'current_page' => 'create_properties',
+			'current_page' => 'properties',
+			// 'current_page' => 'create_properties',
 		]);
 	}
 
 	/**
 	 * @Route("/biens", name="agency_properties")
 	 */
-	public function properties(EntityManagerInterface $manager, PropertyRepository $repository): Response
+	public function properties(PaginatorInterface $paginator, EntityManagerInterface $manager, Request $request, PropertyRepository $repository): Response
 	{
 		// $property = new Property;
 		// $property->setTitle('Mon premier bien')
@@ -61,14 +64,22 @@ class AgencyController extends AbstractController
 		// 	->setAddress('15 Boulevard Gambetta')
 		// 	->setZipcode('34000');
 
-		// $manager->persist($property);
-		// $manager->flush();
+		// // $manager->persist($property);
+		// // $manager->flush();
+		// dump($property);
 
-		$property = $repository->findAllVisible();
-		dump($property);
+		// $properties = $repository->findAllVisible();
+		$properties = $paginator->paginate(
+			$repository->findAllVisibleQuery(),
+			$request->query->getInt('page', 1), 12
+		);
+		dump($properties);
 
 		return $this->render('agency/properties.html.twig', [
-			'current_page' => 'show_properties',
+			'current_page' => 'properties',
+			// 'current_page' => 'show_properties',
+			'properties' => $properties,
+			// 'property' => $property,
 		]);
 	}
 
@@ -90,8 +101,9 @@ class AgencyController extends AbstractController
 		}
 
 		return $this->render('agency/show.html.twig', [
+			'current_page' => 'properties',
+			// 'current_page' => 'show_properties',
 			'property' => $property,
-			'current_page' => 'show_properties',
 		]);
 	}
 }

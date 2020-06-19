@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Property;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -32,6 +33,19 @@ class PropertyRepository extends ServiceEntityRepository
     return $this->findVisibleQuery()
       ->getQuery()
       ->getResult();
+  }
+
+  /**
+   * -----------------------------------------------------------------------------------
+   * Création de méthodes personnalisées afin de faire une requête spécifique en base
+   */
+  /**
+   * @return Query Returns a Query of Property Objects
+   */
+  public function findAllVisibleQuery(): Query
+  {
+    return $this->findVisibleQuery()
+      ->getQuery();
   }
 
   /**
