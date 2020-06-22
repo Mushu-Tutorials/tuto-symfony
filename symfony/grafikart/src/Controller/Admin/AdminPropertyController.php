@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Option;
 use App\Entity\Property;
 use App\Form\PropertyType;
 use App\Repository\PropertyRepository;
@@ -20,7 +21,7 @@ class AdminPropertyController extends AbstractController
   {
     $properties = $repository->findAll();
 
-    return $this->render('admin/index.html.twig', [
+    return $this->render('admin/property/index.html.twig', [
       'controller_name' => 'AdminPropertyController',
       'properties' => $properties,
     ]);
@@ -32,9 +33,19 @@ class AdminPropertyController extends AbstractController
    */
   public function form(Property $property = null, Request $request, EntityManagerInterface $manager)
   {
+    /**
+     * Si c'est une création, il n'y a pas d'objet Property qui est envoyé
+     * On créé donc l'objet
+     */
     if (!$property) {
       $property = new Property;
     }
+
+    // /**
+    //  * Création des Options liés à l'objet Property
+    //  */
+    // $option = new Option;
+    // $property->addOption($option);
 
     /**
      * Appel de la classe PropertyType pour générer le formulaire
@@ -67,7 +78,7 @@ class AdminPropertyController extends AbstractController
       return $this->redirectToRoute('admin_property_index');
     }
 
-    return $this->render('admin/create.html.twig', [
+    return $this->render('admin/property/create.html.twig', [
       'property' => $property,
       'form' => $form->createView(),
       'editMode' => $property->getId() !== null,

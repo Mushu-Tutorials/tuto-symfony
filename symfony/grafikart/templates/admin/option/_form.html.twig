@@ -1,0 +1,12 @@
+{{ form_start(form) }}
+
+{{ form_rest(form) }}
+<button class="btn btn-primary">
+	{% if editMode %}
+		Editer
+	{% else %}
+		Créer
+	{% endif %}
+</button>
+
+{{ form_end(form) }}
