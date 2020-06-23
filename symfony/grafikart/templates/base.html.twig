@@ -47,6 +47,10 @@
 
 					{% if app.user %}
 						<li class="nav-item {% if current_page is defined and current_page == 'properties' %}active{% endif %}">
+							<a class="nav-link" href="{{ path('admin_option_index') }}">Options des biens
+							</a>
+						</li>
+						<li class="nav-item {% if current_page is defined and current_page == 'properties' %}active{% endif %}">
 							<a class="nav-link" href="{{ path('admin_property_index') }}">Admin
 							</a>
 						</li>
