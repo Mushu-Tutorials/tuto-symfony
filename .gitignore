@@ -1,3 +1,7 @@
+# Grafikart : Fichiers images d'un appartement + cache de la miniature de l'image
+symfony/grafikart/public/images/properties
+symfony/grafikart/public/media/cache
+
 # Dossier MySql et logs de l'application
 logs
 mysql

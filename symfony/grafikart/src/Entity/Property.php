@@ -8,11 +8,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass=PropertyRepository::class)
  * @UniqueEntity("title")
+ * @Vich\Uploadable
  */
 class Property
 {
@@ -32,6 +36,25 @@ class Property
    * @ORM\Column(type="integer")
    */
   private $id;
+
+  /**
+   * @ORM\Column(type="string", length=255)
+   *
+   * @var string|null
+   */
+  private $filename;
+
+  /**
+   * NOTE: This is not a mapped field of entity metadata, just a simple property.
+   * 
+   * @Assert\Image(
+   *   mimeTypes="image/jpeg"
+   * )
+   * @Vich\UploadableField(mapping="property_image", fileNameProperty="filename")
+   * 
+   * @var File|null
+   */
+  private $imageFile;
 
   /**
    * @ORM\Column(type="string", length=255)
@@ -105,6 +128,11 @@ class Property
    * @ORM\ManyToMany(targetEntity=Option::class, inversedBy="properties")
    */
   private $options;
+
+  /**
+   * @ORM\Column(type="datetime")
+   */
+  private $updatedAt;
 
   public function __construct()
   {
@@ -312,6 +340,73 @@ class Property
       $this->options->removeElement($option);
       $option->removeProperty($this);
     }
+
+    return $this;
+  }
+
+  /**
+   * Get the value of filename
+   *
+   * @return  string|null
+   */
+  public function getFilename(): ?string
+  {
+    return $this->filename;
+  }
+
+  /**
+   * Set the value of filename
+   * @param  string|null  $filename
+   * @return  Property
+   */
+  public function setFilename(?string $filename): Property
+  {
+    $this->filename = $filename;
+    return $this;
+  }
+
+  /**
+   * Get nOTE: This is not a mapped field of entity metadata, just a simple property.
+   * @return  File|null
+   */
+  public function getImageFile(): ?File
+  {
+    return $this->imageFile;
+  }
+
+  /**
+   * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+   * of 'UploadedFile' is injected into this setter to trigger the update. If this
+   * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+   * must be able to accept an instance of 'File' as the bundle will inject one here
+   * during Doctrine hydration.
+   * 
+   * Set nOTE: This is not a mapped field of entity metadata, just a simple property.
+   *
+   * @param File|null|\Symfony\Component\HttpFoundation\File\UploadedFile $imageFile NOTE: This is not a mapped field of entity metadata, just a simple property.
+   * @return  Property
+   */
+  public function setImageFile($imageFile): Property
+  {
+    $this->imageFile = $imageFile;
+
+    // Only change the updated af if the file is really uploaded to avoid database updates.
+    // This is needed when the file should be set when loading the entity.
+    if ($this->imageFile instanceof UploadedFile) {
+      $this->updatedAt = new \DateTime('now');
+    }
+
+    return $this;
+  }
+
+  public function getUpdatedAt(): ?\DateTimeInterface
+  {
+    return $this->updatedAt;
+  }
+
+  public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+  {
+    $this->updatedAt = $updatedAt;
 
     return $this;
   }

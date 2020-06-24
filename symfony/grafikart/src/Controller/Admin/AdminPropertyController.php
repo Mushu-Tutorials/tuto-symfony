@@ -7,10 +7,13 @@ use App\Entity\Property;
 use App\Form\PropertyType;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+// use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+// use Liip\ImagineBundle\Imagine\Cache\CacheManager;
+// use Symfony\Component\HttpFoundation\File\UploadedFile;
+// use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdminPropertyController extends AbstractController
 {
@@ -62,9 +65,13 @@ class AdminPropertyController extends AbstractController
      * Vérification de la requête, persistance, enregistrement, création puis redirection
      */
     if ($form->isSubmitted() && $form->isValid()) {
+      /**
+       * Si c'est une création, on initialise la date de création du bien
+       */
       if (!$property->getId()) {
         $property->setCreatedAt(new \DateTime);
       }
+
       $manager->persist($property);
 
       if (!$property->getId()) {

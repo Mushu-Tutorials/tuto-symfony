@@ -6,7 +6,11 @@ Tutoriel Symfony - Création d'un site internet
 
 # ToDo
 
-Liste de features interessantes à ajouter au projet :
+Liste de features interessantes à ajouter au projet GrafikArt :
+
+- [ ] Revoir la partie des images en cache [ici](https://youtu.be/OZBVd4ZTIqk?t=1857). Les miniatures d'images en cache ne se suppriment pas quand on en réupload une nouvelle
+
+Liste de features interessantes à ajouter au projet Lior :
 
 - [ ] Comment gérer une option "Se rappeler de moi" : [ici](https://symfony.com/doc/current/security/remember_me.html "Symfony")
 - [ ] Comment gérer les accès dans le controller : [ici](https://symfony.com/doc/current/security/securing_services.html "Symfony")
