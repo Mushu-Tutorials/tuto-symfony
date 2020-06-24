@@ -197,3 +197,16 @@ Pour formatter un INPUT, comme mettre des espaces entre les milliers :
 Il y a possibilité d'utiliser des thèmes qui faudra définir au sein du projet, par epmple pour mettre en forme les formulaires vu dans [cette partie](#creer-un-formulaire "Créer un formulaire").
 
 Modifier le fichier `config/packages/twig.yaml` et ajouter à *twig* le `form_themes: ['bootstrap_4_layout.html.twig']`
+
+## Envoi de mail
+
+Pour l'envoi de mail, on utilise [MailDev](http://maildev.github.io/maildev/ "MailDev") pour simuler la réception des mails. Son interface est accessible via le port [localhost:1080](localhost:1080 "MailDev Localhost").
+
+Pour ma part j'utilise la version **Docker** de l'application :
+
+```shell
+docker pull djfarrelly/maildev
+docker run -p 1080:80 -p 1025:25 djfarrelly/maildev
+```
+
+Dans le fichier `.env` du projet, il faut modifier la configuration afin d'activer les échanges de mail en ajoutant `MAILER_URL=smtp://localhost:1025`

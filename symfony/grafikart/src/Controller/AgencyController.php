@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
 use App\Entity\Property;
 use App\Entity\PropertySearch;
+use App\Form\ContactType;
 use App\Form\PropertySearchType;
+use App\Notification\ContactNotification;
 use App\Repository\PropertyRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -83,7 +86,8 @@ class AgencyController extends AbstractController
 		// $properties = $repository->findAllVisible();
 		$properties = $paginator->paginate(
 			$repository->findAllVisibleQuery($search),
-			$request->query->getInt('page', 1), 12
+			$request->query->getInt('page', 1),
+			12
 		);
 		dump($properties);
 
@@ -99,7 +103,7 @@ class AgencyController extends AbstractController
 	/**
 	 * @Route("/biens/{id}-{slug}", name="agency_show", requirements={"slug": "[a-z0-9\-]*"})
 	 */
-	public function show(Property $property, string $slug): Response
+	public function show(Property $property, string $slug, Request $request, ContactNotification $contactNotification): Response
 	{
 		/**
 		 * IF pemettant la vérification du slug.
@@ -113,10 +117,33 @@ class AgencyController extends AbstractController
 			], 301);
 		}
 
+		/**
+		 * Formulaire de contact d'agent immobilier avec envoi de mail
+		 */
+		$contact = new Contact;
+		$contact->getProperty($property);
+		$form = $this->createForm(ContactType::class, $contact);
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid()) {
+			/**
+			 * Gestion de l'envoi d'email via les entités de Notification
+			 */
+			$contactNotification->notify($contact);
+			
+			$this->addFlash('success', 'Votre email a bien été envoyé');
+
+			// return $this->redirectToRoute('agency_show', [
+			// 	'id' => $property->getId(),
+			// 	'slug' => $property->getSlug(),
+			// ]);
+		}
+
 		return $this->render('agency/show.html.twig', [
 			'current_page' => 'properties',
 			// 'current_page' => 'show_properties',
 			'property' => $property,
+			'form' => $form->createView(),
 		]);
 	}
 }
