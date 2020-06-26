@@ -1,53 +1,33 @@
-version: '3'
-services:
-  # php:
-  #   build: build/php
-  #   expose: 
-  #     - "9000"
-  #   depends_on:
-  #     - db
-  #   volumes:
-  #     - ./:/var/www/html/symfony:cached
-  #     - ./logs:/var/log
-  #   networks: 
-  #     - symfony
-
-  # nginx:
-  #   build:  build/nginx
-  #   # restart: always
-  #   ports:
-  #       - "81:80"
-  #   depends_on:
-  #     - php
-  #     - db
-  #   volumes:
-  #       - ./:/var/www/html/symfony:cached
-  #       - ./logs:/var/log/nginx
-  #   networks: 
-  #     - symfony
-
-  db:
-    image: mysql/mysql-server:latest
-    env_file:
-      - .env
-    environment:
-      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-    # environment:
-    #   - MYSQL_DATABASE: ${MYSQL_DATABASE}
-    #   - MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    #   - MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
-    #   - MYSQL_USER: ${MYSQL_USER}
-    #   - MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-    ports:
-      - "3307:3306"
-    volumes:
-      - ./mysql:/var/lib/mysql
-    # networks: 
-    #   - symfony
-
-networks:
-  symfony: {}
+grafikart_db:
+  image: mariadb
+  # restart: always
+  ports:
+    - "3307:3306"
+  env_file:
+    - .env
+  environment:
+    MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    MYSQL_USER: ${MYSQL_USER}
+    MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    MYSQL_DATABASE: ${MYSQL_DATABASE_GRAFIKART}
+  volumes: 
+    - ./build/mariadb/grafikart:/docker-entrypoint-initdb.d
+    - ./mysql/grafikart:/var/lib/mysql
+    
+lior_db:
+  image: mariadb
+  # restart: always
+  ports:
+    - "3308:3306"
+  env_file:
+    - .env
+  environment:
+    MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+    MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    MYSQL_USER: ${MYSQL_USER}
+    MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    MYSQL_DATABASE: ${MYSQL_DATABASE_LIOR}
+  volumes: 
+    - ./build/mariadb/lior:/docker-entrypoint-initdb.d
+    - ./mysql/lior:/var/lib/mysql
