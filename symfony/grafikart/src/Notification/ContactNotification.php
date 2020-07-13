@@ -3,6 +3,7 @@
 namespace App\Notification;
 
 use App\Entity\Contact;
+use Swift_Message;
 use Twig\Environment;
 
 class ContactNotification
@@ -21,13 +22,19 @@ class ContactNotification
   {
     $this->mailer = $mailer;
     $this->renderer = $renderer;
-    
   }
 
   public function notify(Contact $contact)
   {
-    $message = (new Swift_Mailer('Agence : ' . $contact->getProperty()->getTitle()))
-    ->setFrom
-    ;
+    $message = (new Swift_Message('Agence : ' . $contact->getProperty()->getTitle()))
+      /**Possibilité de mettre le mail du client directement */
+      // ->setFrom($contact->getEmail())
+      ->setFrom('noreply@agence.fr')
+      ->setTo('contact@agence.fr')
+      ->setReplyTo($contact->getEmail())
+      ->setBody($this->renderer->render('emails/contact.html.twig', [
+        'contact' => $contact,
+      ]), 'text/html');
+    $this->mailer->send($message);
   }
 }

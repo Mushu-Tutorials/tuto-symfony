@@ -121,7 +121,7 @@ class AgencyController extends AbstractController
 		 * Formulaire de contact d'agent immobilier avec envoi de mail
 		 */
 		$contact = new Contact;
-		$contact->getProperty($property);
+		$contact->setProperty($property);
 		$form = $this->createForm(ContactType::class, $contact);
 		$form->handleRequest($request);
 

@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+  mariadb:
+    image: mariadb
+    # restart: always
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE_GRAFIKART}
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile-lior
+    restart: on-failure
+    user: ${LOCAL_USER}
+
+  nginx:
+    image: nginx:1.19.0-alpine
+    # restart: on-failure
+    depends_on:
+      - php
+  # adminer:
+  #   image: adminer
+  #   restart: on-failure

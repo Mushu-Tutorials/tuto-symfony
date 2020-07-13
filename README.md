@@ -4,6 +4,14 @@ _Inspired from [Lior CHAMLA](https://www.youtube.com/channel/UCS71mal_TkTW_PpZR9
 
 Tutoriel Symfony - Création d'un site internet
 
+# Dockerization
+
+La dockerization du projet a été effectuée en suivant les instructions de ce [tutoriel](https://knplabs.com/en/blog/how-to-dockerise-a-symfony-4-project "KNP Labs").
+
+To run the Grafikart Projetct `docker-compose -f docker-compose-grafikart.yml -f docker-compose-grafikart.override.yml up -d`
+
+To run the Lior Projetct `docker-compose -f docker-compose-lior.yml -f docker-compose-lior.override.yml up -d`
+
 # ToDo
 
 Liste de features interessantes à ajouter au projet GrafikArt :
@@ -202,7 +210,7 @@ Modifier le fichier `config/packages/twig.yaml` et ajouter à *twig* le `form_th
 
 Pour l'envoi de mail, on utilise [MailDev](http://maildev.github.io/maildev/ "MailDev") pour simuler la réception des mails. Son interface est accessible via le port [localhost:1080](localhost:1080 "MailDev Localhost").
 
-Pour ma part j'utilise la version **Docker** de l'application :
+Pour ma part j'utilise la version **Docker** de l'application et me connecte à l'adresse du docker [http://localhost:1080](http://localhost:1080 "MailDev") :
 
 ```shell
 docker pull djfarrelly/maildev
@@ -210,3 +218,57 @@ docker run -p 1080:80 -p 1025:25 djfarrelly/maildev
 ```
 
 Dans le fichier `.env` du projet, il faut modifier la configuration afin d'activer les échanges de mail en ajoutant `MAILER_URL=smtp://localhost:1025`
+
+Créer les fonctions et fichiers associés à la gestion des mails :
+
+- Un objet `Entity/Contact.php` permettant l'instanciation d'un mail.
+- Un formulaire `Form/ContactType.php` permettant la génération d'un formulaire de contact.
+- Une partie **Vue** du formulaire affichée dans `grafikart/templates/agency/show.html.twig`
+- Un controller `Notification/ContactNotification.php` dans un dossier séparé destiné à la gestion globale d'évènements, ici la gestion de mails
+
+```php
+namespace App\Notification;
+
+use App\Entity\Contact;
+use Swift_Message;
+use Twig\Environment;
+
+class ContactNotification
+{
+  /**
+   * @var \Swift_Mailer
+   */
+  private $mailer;
+
+  /**
+   * @var Environment
+   */
+  private $renderer;
+
+  public function __construct(\Swift_Mailer $mailer, Environment $renderer)
+  {
+    $this->mailer = $mailer;
+    $this->renderer = $renderer;
+  }
+
+  public function notify(Contact $contact)
+  {
+    $message = (new Swift_Message('Agence : ' . $contact->getProperty()->getTitle()))
+      /**Possibilité de mettre le mail du client directement */
+      // ->setFrom($contact->getEmail())
+      ->setFrom('noreply@agence.fr')
+      ->setTo('contact@agence.fr')
+      ->setReplyTo($contact->getEmail())
+      ->setBody($this->renderer->render('email/contact.html.twig', [
+        'contact' => $contact,
+      ]), 'text/html');
+    $this->mailer->send($message);
+  }
+}
+```
+
+- Une **Vue** d'un mail type `templates/emails/contact.html.twig` généré à partir d'un outil en ligne : [mjml.io](https://mjml.io/ "mjml.io")
+
+```
+
+```

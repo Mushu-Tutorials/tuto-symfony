@@ -40,7 +40,7 @@ vendor/
 # composer.lock
 
 ### Symfony ###
-symfony/liorchamla/var/
+symfony/lior/var/
 symfony/grafikart/var/
 
 # Cache and logs (Symfony2)

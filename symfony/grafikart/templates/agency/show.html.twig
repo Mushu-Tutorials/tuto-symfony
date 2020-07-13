@@ -6,6 +6,19 @@
 	<div class="jumbotron">
 		<div class="container">
 
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+			{# Si le formulaire de contact n'est pas valide, renvoi d'un message alert danger #}
+			{% if not form.vars.valid %}
+				<div class="alert alert-danger">
+					ERREUR. L'email de contact n'a pas été envoyé, veuillez modifier le formulaire de contact.
+				</div>
+			{% endif %}
+
 			<div class="row">
 
 				<div class="col-md-8">
@@ -35,13 +48,13 @@
 							<div class="col">{{ form_row(form.firstname) }}</div>
 							<div class="col">{{ form_row(form.lastname) }}</div>
 						</div>
-						
+
 						<div class="row">
 							<div class="col">{{ form_row(form.phone) }}</div>
 							<div class="col">{{ form_row(form.email) }}</div>
 						</div>
 
-						{{ form_end(form) }}
+						{{ form_rest(form) }}
 
 						<div class="form-group">
 							<button class="btn btn-primary">Envoyer</button>
