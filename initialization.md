@@ -11,11 +11,12 @@ cd symfony
 
 ## Installer les dépendances requises
 
-Installationn et mise a jour des dépendances obsolètes :
+Installationn et mise a jour des dépendances obsolètes ainsi que Webpack :
 
 ```shell
 composer require laminas/laminas-code laminas/laminas-eventmanager
 composer require orm-fixtures fzaninotto/faker --dev
+composer require symfony/webpack-encore-bundle
 ```
 
 ## Run the serve
@@ -130,7 +131,9 @@ php bin/console make:migration
 php bin/console doctrine:migrations:migrate
 ```
 
-#### Login d'un admin
+#### Login d'un user
+
+**Faire en fonction des roles : ADMIN ou USER**
 
 Modifier le fichier `./config/packages/security.yaml` afin de permettre la connexion des utilisateurs en s'appuyant sur la configuration définie dans ce fichier (ici la base de données).
 
@@ -321,3 +324,57 @@ docker run -p 1080:80 -p 1025:25 djfarrelly/maildev
 ```
 
 Dans le fichier `.env` du projet, il faut modifier la configuration afin d'activer les échanges de mail en ajoutant `MAILER_URL=smtp://localhost:1025`
+
+Créer les fonctions et fichiers associés à la gestion des mails :
+
+- Un objet `Entity/Contact.php` permettant l'instanciation d'un mail.
+- Un formulaire `Form/ContactType.php` permettant la génération d'un formulaire de contact.
+- Une partie **Vue** du formulaire affichée dans `grafikart/templates/agency/show.html.twig`
+- Un controller `Notification/ContactNotification.php` dans un dossier séparé destiné à la gestion globale d'évènements, ici la gestion de mails
+
+```php
+namespace App\Notification;
+
+use App\Entity\Contact;
+use Swift_Message;
+use Twig\Environment;
+
+class ContactNotification
+{
+  /**
+   * @var \Swift_Mailer
+   */
+  private $mailer;
+
+  /**
+   * @var Environment
+   */
+  private $renderer;
+
+  public function __construct(\Swift_Mailer $mailer, Environment $renderer)
+  {
+    $this->mailer = $mailer;
+    $this->renderer = $renderer;
+  }
+
+  public function notify(Contact $contact)
+  {
+    $message = (new Swift_Message('Agence : ' . $contact->getProperty()->getTitle()))
+      /**Possibilité de mettre le mail du client directement */
+      // ->setFrom($contact->getEmail())
+      ->setFrom('noreply@agence.fr')
+      ->setTo('contact@agence.fr')
+      ->setReplyTo($contact->getEmail())
+      ->setBody($this->renderer->render('email/contact.html.twig', [
+        'contact' => $contact,
+      ]), 'text/html');
+    $this->mailer->send($message);
+  }
+}
+```
+
+- Une **Vue** d'un mail type `templates/emails/contact.html.twig` généré à partir d'un outil en ligne : [mjml.io](https://mjml.io/ "mjml.io")
+
+```php
+Exemple ici
+```

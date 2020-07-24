@@ -269,6 +269,10 @@ class ContactNotification
 
 - Une **Vue** d'un mail type `templates/emails/contact.html.twig` généré à partir d'un outil en ligne : [mjml.io](https://mjml.io/ "mjml.io")
 
+```php
+Exemple ici
 ```
 
-```
+## Utiliser du JS dans Symfony
+
+Afin d'utiliser du Javascript, Symfony propose une librairie appelée **[Symfony Encore Webpack](https://symfony.com/doc/current/frontend.html "Symfony Encore Webpack")**. Il faudra exécuter la commande suivante :
