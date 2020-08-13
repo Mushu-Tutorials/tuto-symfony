@@ -2,6 +2,8 @@
 
 _Inspired from [Lior CHAMLA](https://www.youtube.com/channel/UCS71mal_TkTW_PpZR9YLpIA "Lior CHAMLA") tutorial on **Symfony development**. Playlist YouTube [here](https://www.youtube.com/playlist?list=PLpUhHhXoxrjdQLodxlHFY09_9XzqdPBW8 "Syfony Development")_
 
+_Inspired from [CodeReviewVids](https://codereviewvideos.com/course/symfony-4-beginners-tutorial/video/getting-started-with-symfony-4 "CodeReviewVids") tutorial on **Symfony development & deployment**.
+
 Tutoriel Symfony - Création d'un site internet
 
 # Dockerization
