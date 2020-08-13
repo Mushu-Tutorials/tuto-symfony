@@ -11,19 +11,21 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE_GRAFIKART}
+    ports:
+      - 3307:3306
 
-  php:
-    build:
-      context: .
-      dockerfile: docker/php/Dockerfile
-    restart: on-failure
-    user: ${LOCAL_USER}
+  # php:
+  #   build:
+  #     context: .
+  #     dockerfile: docker/php/Dockerfile
+  #   restart: on-failure
+  #   user: ${LOCAL_USER}
 
-  nginx:
-    image: nginx:1.19.0-alpine
-    # restart: on-failure
-    depends_on:
-      - php
+  # nginx:
+  #   image: nginx:1.19.0-alpine
+  #   # restart: on-failure
+  #   depends_on:
+  #     - php
   # adminer:
   #   image: adminer
   #   restart: on-failure
