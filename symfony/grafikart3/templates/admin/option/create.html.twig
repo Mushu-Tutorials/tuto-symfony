@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container">
+
+		{% if editMode %}
+			<h1>Editer l'option</h1>
+		{% else %}
+			<h1>Création d'une nouvelle option</h1>
+		{% endif %}
+
+		{{ include('admin/option/_form.html.twig') }}
+
+	</div>
+{% endblock %}

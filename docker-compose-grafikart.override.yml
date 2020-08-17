@@ -6,7 +6,7 @@ services:
       - "./docker/mariadb/grafikart:/docker-entrypoint-initdb.d"
       - "./mysql/grafikart:/var/lib/mysql"
     ports:
-      - "3307:3306"
+      # - "3307:3306"
       - "${MARIADB_PORT_GRAFIKART}:3306"
 
   # php:

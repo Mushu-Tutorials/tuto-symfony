@@ -18,38 +18,39 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AgencyController extends AbstractController
 {
-	// /**
-	//  * @Route("/agency", name="agency")
-	//  */
-	// public function index()
-	// {
-	// 	return $this->render('agency/index.html.twig', [
-	// 		'controller_name' => 'AgencyController',
-	// 	]);
-	// }
+    /**
+     * @Route("/agency", name="agency")
+     */
+    public function index()
+    {
+        return $this->render('agency/index.html.twig', [
+            'controller_name' => 'AgencyController',
+        ]);
+    }
 
 	/**
 	 * @Route("/", name="home")
 	 */
-	public function home(PropertyRepository $repository): Response
+	// public function home(PropertyRepository $repository): Response
+	public function home(): Response
 	{
-		$properties = $repository->findLatest();
+		// $properties = $repository->findLatest();
 
 		return $this->render('agency/home.html.twig', [
-			'properties' => $properties,
+			// 'properties' => $properties,
 		]);
 	}
 
-	/**
-	 * @Route("/add", name="agency_create")
-	 */
-	public function create(): Response
-	{
-		return $this->render('agency/create.html.twig', [
-			'current_page' => 'properties',
-			// 'current_page' => 'create_properties',
-		]);
-	}
+	// /**
+	//  * @Route("/add", name="agency_create")
+	//  */
+	// public function create(): Response
+	// {
+	// 	return $this->render('agency/create.html.twig', [
+	// 		'current_page' => 'properties',
+	// 		// 'current_page' => 'create_properties',
+	// 	]);
+	// }
 
 	/**
 	 * @Route("/biens", name="agency_properties")
@@ -100,50 +101,50 @@ class AgencyController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/biens/{id}-{slug}", name="agency_show", requirements={"slug": "[a-z0-9\-]*"})
-	 */
-	public function show(Property $property, string $slug, Request $request, ContactNotification $contactNotification): Response
-	{
-		/**
-		 * IF pemettant la vérification du slug.
-		 * Si on est sur l'objet Property et qu'on modifie le slug
-		 * Ce dernier nous redirigera sur la même page avec le slug qui correspond à l'objet
-		 */
-		if ($property->getSlug() !== $slug) {
-			return $this->redirectToRoute('agency_show', [
-				'id' => $property->getId(),
-				'slug' => $property->getSlug(),
-			], 301);
-		}
+	// /**
+	//  * @Route("/biens/{id}-{slug}", name="agency_show", requirements={"slug": "[a-z0-9\-]*"})
+	//  */
+	// public function show(Property $property, string $slug, Request $request, ContactNotification $contactNotification): Response
+	// {
+	// 	/**
+	// 	 * IF pemettant la vérification du slug.
+	// 	 * Si on est sur l'objet Property et qu'on modifie le slug
+	// 	 * Ce dernier nous redirigera sur la même page avec le slug qui correspond à l'objet
+	// 	 */
+	// 	if ($property->getSlug() !== $slug) {
+	// 		return $this->redirectToRoute('agency_show', [
+	// 			'id' => $property->getId(),
+	// 			'slug' => $property->getSlug(),
+	// 		], 301);
+	// 	}
 
-		/**
-		 * Formulaire de contact d'agent immobilier avec envoi de mail
-		 */
-		$contact = new Contact;
-		$contact->setProperty($property);
-		$form = $this->createForm(ContactType::class, $contact);
-		$form->handleRequest($request);
+	// 	/**
+	// 	 * Formulaire de contact d'agent immobilier avec envoi de mail
+	// 	 */
+	// 	$contact = new Contact;
+	// 	$contact->setProperty($property);
+	// 	$form = $this->createForm(ContactType::class, $contact);
+	// 	$form->handleRequest($request);
 
-		if ($form->isSubmitted() && $form->isValid()) {
-			/**
-			 * Gestion de l'envoi d'email via les entités de Notification
-			 */
-			$contactNotification->notify($contact);
+	// 	if ($form->isSubmitted() && $form->isValid()) {
+	// 		/**
+	// 		 * Gestion de l'envoi d'email via les entités de Notification
+	// 		 */
+	// 		$contactNotification->notify($contact);
 			
-			$this->addFlash('success', 'Votre email a bien été envoyé');
+	// 		$this->addFlash('success', 'Votre email a bien été envoyé');
 
-			// return $this->redirectToRoute('agency_show', [
-			// 	'id' => $property->getId(),
-			// 	'slug' => $property->getSlug(),
-			// ]);
-		}
+	// 		// return $this->redirectToRoute('agency_show', [
+	// 		// 	'id' => $property->getId(),
+	// 		// 	'slug' => $property->getSlug(),
+	// 		// ]);
+	// 	}
 
-		return $this->render('agency/show.html.twig', [
-			'current_page' => 'properties',
-			// 'current_page' => 'show_properties',
-			'property' => $property,
-			'form' => $form->createView(),
-		]);
-	}
+	// 	return $this->render('agency/show.html.twig', [
+	// 		'current_page' => 'properties',
+	// 		// 'current_page' => 'show_properties',
+	// 		'property' => $property,
+	// 		'form' => $form->createView(),
+	// 	]);
+	// }
 }

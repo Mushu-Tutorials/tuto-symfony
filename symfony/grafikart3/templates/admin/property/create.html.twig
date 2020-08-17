@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container">
+
+		{% if editMode %}
+			<h1>Editer le bien</h1>
+		{% else %}
+			<h1>Création d'un nouveau bien</h1>
+		{% endif %}
+
+		{{ include('admin/property/_form.html.twig') }}
+
+	</div>
+{% endblock %}
