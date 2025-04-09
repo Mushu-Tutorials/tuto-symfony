@@ -6,6 +6,16 @@ _Inspired from [CodeReviewVids](https://codereviewvideos.com/course/symfony-4-be
 
 Tutoriel Symfony - Création d'un site internet
 
+# Sommaire
+
+- [Dockerization](#dockerization)
+- [ToDo](#todo)
+  - [Liens utiles](#liens-utiles)
+  - [Prérequis](#pr%C3%A9requis)
+  - [Initialisation du projet](#initialisation-du-projet)
+  - [Run the serve](#run-the-serve)
+  - [Installer un serveur local](#installer-un-serveur-local)
+
 # Dockerization
 
 La dockerization du projet a été effectuée en suivant les instructions de ce [tutoriel](https://knplabs.com/en/blog/how-to-dockerise-a-symfony-4-project "KNP Labs").
